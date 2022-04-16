@@ -4,7 +4,7 @@
   margin: 0 1px 0 1px;
   padding: 0;
   display: inline-block;
-  background-image: url('../../../../../images/like-btn.svg');
+  background-image: url('./../../../images/like-btn.svg');
   background-color: #ffffff;
   border: none;
 }
