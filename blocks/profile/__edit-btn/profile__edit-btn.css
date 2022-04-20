@@ -1,11 +1,13 @@
 .profile__edit-btn {
   width: 24px;
   height: 24px;
-  margin: 0;
+  margin: 16px 0 0 0;
   padding: 0;
   display: inline-block;
-  background-image: url('../../../images/edit-btn.svg');
+  vertical-align: top;
+  background-image: url('./../../../images/edit-btn.svg');
   background-size: contain;
+  background-repeat: no-repeat;
   background-color: #000000;
   border: none;
 }

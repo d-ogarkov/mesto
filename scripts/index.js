@@ -24,10 +24,8 @@ function popupClose(evt) {
 
 function formSubmit(evt) {
   evt.preventDefault();
-  let title = titleInput.value;
-  let subtitle = subtitleInput.value;
-  titleCurrent.textContent = title;
-  subtitleCurrent.textContent = subtitle;
+  titleCurrent.textContent = titleInput.value;
+  subtitleCurrent.textContent = subtitleInput.value;
   popupToggle();
 }
 
