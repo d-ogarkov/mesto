@@ -11,8 +11,11 @@
 
 @media screen and (max-width: 880px) {
   .profile__subtitle {
+    max-width: none;
     margin-top: 14px;
     font-size: 14px;
     line-height: 1.21;
+    padding-left: 19px;
+    padding-right: 19px;
   }
 }

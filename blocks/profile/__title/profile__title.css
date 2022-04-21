@@ -14,9 +14,16 @@
 
 @media screen and (max-width: 880px) {
   .profile__title {
-    margin-left: 28px;
+    max-width: calc(100% - 100px);
+    margin-left: 47px;
     margin-right: 10px;
     font-size: 27px;
     line-height: 1.22;
+  }
+}
+
+@media screen and (max-width: 581px) {
+  .profile__title {
+    max-width: calc(100% - 100px);
   }
 }
