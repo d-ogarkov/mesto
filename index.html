@@ -22,55 +22,13 @@
     </section>
     <section class="elements">
       <ul class="elements__list">
-        <li class="element">
-          <img class="element__image" src="images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаевск">
-          <div class="element__caption">
-            <h2 class="element__title">Карачаевск</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__image" src="images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус">
-          <div class="element__caption">
-            <h2 class="element__title">Гора Эльбрус</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__image" src="images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай">
-          <div class="element__caption">
-            <h2 class="element__title">Домбай</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__image" src="images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус">
-          <div class="element__caption">
-            <h2 class="element__title">Гора Эльбрус</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__image" src="images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай">
-          <div class="element__caption">
-            <h2 class="element__title">Домбай</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img class="element__image" src="images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаево-Черкесия">
-          <div class="element__caption">
-            <h2 class="element__title">Карачаево-Черкесия</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </li>
       </ul>
     </section>
   </main>
   <footer class="footer">
     <p class="footer__copyright">© 2020 Mesto Russia</p>
   </footer>
-  <div class="popup">
+  <div class="popup popup__edit-form">
     <div class="popup__container">
       <form action="/" method="post" name="edit-form" class="edit-form">
         <button type="button" class="popup__close-btn"></button>
@@ -83,6 +41,36 @@
       </form>
     </div>
   </div>
+  <div class="popup popup__add-form">
+    <div class="popup__container">
+      <form action="/" method="post" name="add-form" class="add-form">
+        <button type="button" class="popup__close-btn"></button>
+        <h2 class="popup__title">Новое место</h2>
+        <fieldset class="popup__profile-info">
+          <input type="text" class="popup__input popup__input_type_title" placeholder="Название">
+          <input type="text" class="popup__input popup__input_type_link" placeholder="Ссылка на картинку">
+        </fieldset>
+        <button type="submit" class="popup__submit-btn">Сохранить</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup__image-view">
+    <div class="popup__media">
+      <button type="button" class="popup__close-btn"></button>
+      <img class="popup__image" src="images/placeholder.png" alt="Просмотр изображения">
+      <p class="popup__caption"></p>
+    </div>
+  </div>
+  <template id="element">
+    <li class="element">
+      <img class="element__image" src="images/placeholder.png" alt="Изображение в карточке">
+      <button type="button" class="element__trash-btn"></button>
+      <div class="element__caption">
+        <h2 class="element__title"></h2>
+        <button type="button" class="element__like-btn"></button>
+      </div>
+    </li>
+  </template>
   <script src="scripts/index.js"></script>
 </body>
 </html>
