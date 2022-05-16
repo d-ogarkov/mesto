@@ -147,14 +147,6 @@ popupOverlays.forEach(popup => {
 });
 formEdit.addEventListener('submit', submitFormEdit);
 formAdd.addEventListener('submit', submitFormAdd);
-/*document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
-    const popupOpened = document.querySelector('.popup_opened');
-    if (popupOpened !== null) {
-      closePopup(popupOpened);
-    }
-  }
-});*/
 
 // Включаем валидацию форм
 enableValidation({
