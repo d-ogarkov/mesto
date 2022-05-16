@@ -7,29 +7,43 @@ const popupFormAdd = document.querySelector('.popup_type_add-form');
 const popupImageView = document.querySelector('.popup_type_image-view');
 const popupImage = popupImageView.querySelector('.popup__image');
 const popupCaption = popupImageView.querySelector('.popup__caption');
+const popupOverlays = document.querySelectorAll('.popup');
 const btnsClose = document.querySelectorAll('.popup__close-btn');
 const formEdit = document.querySelector('.edit-form');
 const formAdd = document.querySelector('.add-form');
-const titleCurrent = document.querySelector('.profile__title');
+const nameCurrent = document.querySelector('.profile__name');
 const subtitleCurrent = document.querySelector('.profile__subtitle');
-const inputFormEditTitle = popupFormEdit.querySelector('.popup__input_type_title');
+const inputFormEditName = popupFormEdit.querySelector('.popup__input_type_name');
 const inputFormEditSubtitle = popupFormEdit.querySelector('.popup__input_type_subtitle');
 const inputFormAddTitle = popupFormAdd.querySelector('.popup__input_type_title');
 const inputFormAddLink = popupFormAdd.querySelector('.popup__input_type_link');
 
+// Обрабатывает нажатие клавиш для закрытия попапа по Esc
+function handlePopupKey(evt, popup) {
+  if (evt.key === 'Escape') {
+    closePopup(popup);
+  }
+}
+
 // Открывает попап, переданный в аргументе
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', (evt) => {
+    handlePopupKey(evt, popup);
+  });
 }
 
 // Закрывает попап, переданный в аргументе
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', (evt) => {
+    handlePopupKey(evt, popup);
+  });
 }
 
 // Открывает попап редактирования профиля, подставив в инпуты текущие данные со страницы
 function openFormEdit() {
-  inputFormEditTitle.value = titleCurrent.textContent;
+  inputFormEditName.value = nameCurrent.textContent;
   inputFormEditSubtitle.value = subtitleCurrent.textContent;
   openPopup(popupFormEdit);
 }
@@ -50,7 +64,7 @@ function openImageView(imageSrc, titleText) {
 // Отправляет форму редактирования профиля (подставляет на страницу данные из инпутов) и закрывает попап
 function submitFormEdit(evt) {
   evt.preventDefault();
-  titleCurrent.textContent = inputFormEditTitle.value;
+  nameCurrent.textContent = inputFormEditName.value;
   subtitleCurrent.textContent = inputFormEditSubtitle.value;
   closePopup(popupFormEdit);
 }
@@ -124,5 +138,30 @@ btnsClose.forEach(btn => {
     closePopup(btn.closest('.popup'));
   });
 });
+popupOverlays.forEach(popup => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target === evt.currentTarget) {
+      closePopup(popup);
+    }
+  });
+});
 formEdit.addEventListener('submit', submitFormEdit);
 formAdd.addEventListener('submit', submitFormAdd);
+/*document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape') {
+    const popupOpened = document.querySelector('.popup_opened');
+    if (popupOpened !== null) {
+      closePopup(popupOpened);
+    }
+  }
+});*/
+
+// Включаем валидацию форм
+enableValidation({
+  formSelector: '.form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-btn',
+  inactiveButtonClass: 'popup__submit-btn_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_active'
+});

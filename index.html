@@ -14,7 +14,7 @@
     <section class="profile">
       <img class="profile__avatar" src="images/profile-avatar.jpg" alt="Жак-Ив Кусто">
       <div class="profile__info">
-        <h1 class="profile__title">Жак-Ив Кусто</h1>
+        <h1 class="profile__name">Жак-Ив Кусто</h1>
         <button type="button" class="profile__edit-btn"></button>
         <p class="profile__subtitle">Исследователь океана</p>
       </div>
@@ -30,12 +30,18 @@
   </footer>
   <div class="popup popup_type_edit-form">
     <div class="popup__container">
-      <form action="/" method="post" name="edit-form" class="edit-form">
+      <form action="/" method="post" name="edit-form" class="form edit-form">
         <button type="button" class="popup__close-btn"></button>
         <h2 class="popup__title">Редактировать профиль</h2>
         <fieldset class="popup__profile-info">
-          <input type="text" class="popup__input popup__input_type_title" placeholder="Имя">
-          <input type="text" class="popup__input popup__input_type_subtitle" placeholder="Титул">
+          <label class="popup__field">
+            <input type="text" id="name-input" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40">
+            <span class="popup__error name-input-error"></span>
+          </label>
+          <label class="popup__field">
+            <input type="text" id="subtitle-input" class="popup__input popup__input_type_subtitle" placeholder="Титул" required minlength="2" maxlength="200">
+            <span class="popup__error subtitle-input-error"></span>
+          </label>
         </fieldset>
         <input type="submit" class="popup__submit-btn" value="Сохранить">
       </form>
@@ -43,12 +49,18 @@
   </div>
   <div class="popup popup_type_add-form">
     <div class="popup__container">
-      <form action="/" method="post" name="add-form" class="add-form">
+      <form action="/" method="post" name="add-form" class="form add-form">
         <button type="button" class="popup__close-btn"></button>
         <h2 class="popup__title">Новое место</h2>
         <fieldset class="popup__profile-info">
-          <input type="text" class="popup__input popup__input_type_title" placeholder="Название">
-          <input type="text" class="popup__input popup__input_type_link" placeholder="Ссылка на картинку">
+          <label class="popup__field">
+            <input type="text" id="title-input" class="popup__input popup__input_type_title" placeholder="Название" required minlength="2" maxlength="30">
+            <span class="popup__error title-input-error"></span>
+          </label>
+          <label class="popup__field">
+            <input type="url" id="link-input" class="popup__input popup__input_type_link" placeholder="Ссылка на картинку" required>
+            <span class="popup__error link-input-error"></span>
+          </label>
         </fieldset>
         <input type="submit" class="popup__submit-btn" value="Сохранить">
       </form>
@@ -72,6 +84,7 @@
     </li>
   </template>
   <script src="scripts/cards.js"></script>
+  <script src="scripts/validate.js"></script>
   <script src="scripts/index.js"></script>
 </body>
 </html>
