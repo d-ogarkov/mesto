@@ -11,6 +11,7 @@ const popupOverlays = document.querySelectorAll('.popup');
 const btnsClose = document.querySelectorAll('.popup__close-btn');
 const formEdit = document.querySelector('.edit-form');
 const formAdd = document.querySelector('.add-form');
+const formAddSubmitBtn = formAdd.querySelector('.popup__submit-btn');
 const nameCurrent = document.querySelector('.profile__name');
 const subtitleCurrent = document.querySelector('.profile__subtitle');
 const inputFormEditName = popupFormEdit.querySelector('.popup__input_type_name');
@@ -71,6 +72,7 @@ function submitFormAdd(evt) {
   evt.preventDefault();
   prependElement(createElement(inputFormAddTitle.value, inputFormAddLink.value));
   formAdd.reset();
+  formAddSubmitBtn.classList.add('popup__submit-btn_disabled');
   closePopup(popupFormAdd);
 }
 
