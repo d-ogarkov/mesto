@@ -11,6 +11,10 @@
   border-radius: 10px;
 }
 
+.popup__container:hover {
+  cursor: default;
+}
+
 @media screen and (max-width: 880px) {
   .popup__container {
     margin: 0 19px;

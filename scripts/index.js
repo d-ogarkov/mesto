@@ -19,26 +19,23 @@ const inputFormAddTitle = popupFormAdd.querySelector('.popup__input_type_title')
 const inputFormAddLink = popupFormAdd.querySelector('.popup__input_type_link');
 
 // Обрабатывает нажатие клавиш для закрытия попапа по Esc
-function handlePopupKey(evt, popup) {
+function handlePopupKey(evt) {
   if (evt.key === 'Escape') {
-    closePopup(popup);
+    const popupOpened = document.querySelector('.popup_opened');
+    closePopup(popupOpened);
   }
 }
 
 // Открывает попап, переданный в аргументе
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  document.addEventListener('keydown', (evt) => {
-    handlePopupKey(evt, popup);
-  });
+  document.addEventListener('keydown', handlePopupKey);
 }
 
 // Закрывает попап, переданный в аргументе
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', (evt) => {
-    handlePopupKey(evt, popup);
-  });
+  document.removeEventListener('keydown', handlePopupKey);
 }
 
 // Открывает попап редактирования профиля, подставив в инпуты текущие данные со страницы
@@ -73,13 +70,12 @@ function submitFormEdit(evt) {
 function submitFormAdd(evt) {
   evt.preventDefault();
   prependElement(createElement(inputFormAddTitle.value, inputFormAddLink.value));
-  inputFormAddTitle.value = '';
-  inputFormAddLink.value = '';
+  formAdd.reset();
   closePopup(popupFormAdd);
 }
 
 // Переключает состояние лайка на карточке
-function toggleLike(evt) {
+function handleToggleLike(evt) {
   evt.target.classList.toggle('element__like-btn_active');
 }
 
@@ -98,7 +94,7 @@ function createElement(elementTitle, elementImageSrc) {
   elementImage.addEventListener('click', () => {
     openImageView(elementImageSrc, elementTitle);
   });
-  element.querySelector('.element__like-btn').addEventListener('click', toggleLike);
+  element.querySelector('.element__like-btn').addEventListener('click', handleToggleLike);
   element.querySelector('.element__trash-btn').addEventListener('click', deleteElement);
 
   return element;
@@ -147,13 +143,3 @@ popupOverlays.forEach(popup => {
 });
 formEdit.addEventListener('submit', submitFormEdit);
 formAdd.addEventListener('submit', submitFormAdd);
-
-// Включаем валидацию форм
-enableValidation({
-  formSelector: '.form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit-btn',
-  inactiveButtonClass: 'popup__submit-btn_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_active'
-});

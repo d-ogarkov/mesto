@@ -61,3 +61,13 @@ const enableValidation = (settings) => {
     setEventListeners(formElement, settings);
   });
 }
+
+// Включаем валидацию форм
+enableValidation({
+  formSelector: '.form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-btn',
+  inactiveButtonClass: 'popup__submit-btn_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_active'
+});

@@ -6,3 +6,7 @@
   position: relative;
   color: #ffffff;
 }
+
+.popup__media:hover {
+  cursor: default;
+}
