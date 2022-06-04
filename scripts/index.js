@@ -1,4 +1,42 @@
-const elementTemplate = document.querySelector('#elements__item-template').content.querySelector('.element');
+import { Card } from "./Card.js";
+import { FormValidator } from "./FormValidator.js";
+
+const initialCards = [
+  {
+    title: 'Архыз',
+    imageSrc: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    title: 'Челябинская область',
+    imageSrc: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    title: 'Иваново',
+    imageSrc: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    title: 'Камчатка',
+    imageSrc: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    title: 'Холмогорский район',
+    imageSrc: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    title: 'Байкал',
+    imageSrc: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+const formSettings = {
+  formSelector: '.form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-btn',
+  inactiveButtonClass: 'popup__submit-btn_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_active'
+};
+
 const elementList = document.querySelector('.elements__list');
 const btnEdit = document.querySelector('.profile__edit-btn');
 const btnAdd = document.querySelector('.profile__add-btn');
@@ -70,36 +108,15 @@ function submitFormEdit(evt) {
 // Отправляет форму добавления карточки (создает в начале списка новую карточку с заданными названием и картинкой)
 function submitFormAdd(evt) {
   evt.preventDefault();
-  prependElement(createElement(inputFormAddTitle.value, inputFormAddLink.value));
+  const card = new Card({
+    title: inputFormAddTitle.value,
+    imageSrc: inputFormAddLink.value
+  }, '#elements__item-template', openImageView);
+  const cardElement = card.generateCard();
+  prependElement(cardElement);
   formAdd.reset();
   formAddSubmitBtn.classList.add('popup__submit-btn_disabled');
   closePopup(popupFormAdd);
-}
-
-// Переключает состояние лайка на карточке
-function handleToggleLike(evt) {
-  evt.target.classList.toggle('element__like-btn_active');
-}
-
-// Возвращает карточку с заданными названием и адресом картинки
-function createElement(elementTitle, elementImageSrc) {
-  // Клонируем содержимое шаблона карточки
-  const element = elementTemplate.cloneNode(true);
-  const elementImage = element.querySelector('.element__image');
-
-  // Наполняем копию содержимым
-  elementImage.src = elementImageSrc;
-  elementImage.alt = elementTitle;
-  element.querySelector('.element__title').textContent = elementTitle;
-
-  // Добавляем обработчики событий
-  elementImage.addEventListener('click', () => {
-    openImageView(elementImageSrc, elementTitle);
-  });
-  element.querySelector('.element__like-btn').addEventListener('click', handleToggleLike);
-  element.querySelector('.element__trash-btn').addEventListener('click', deleteElement);
-
-  return element;
 }
 
 // Добавляет элемент на страницу в начало списка
@@ -112,14 +129,12 @@ function prependElement(element) {
   elementList.prepend(element);
 }
 
-function deleteElement(evt) {
-  evt.target.closest('.element').remove();
-}
-
 // Заполняет страницу начальным набором карточек, вызывая addElement в цикле
 function fillPage() {
-  initialCards.forEach(function(card) {
-    appendElement(createElement(card.name, card.link));
+  initialCards.forEach(function(cardData) {
+    const card = new Card(cardData, '#elements__item-template', openImageView);
+    const cardElement = card.generateCard();
+    appendElement(cardElement);
   });
 }
 
@@ -145,3 +160,9 @@ popupOverlays.forEach(popup => {
 });
 formEdit.addEventListener('submit', submitFormEdit);
 formAdd.addEventListener('submit', submitFormAdd);
+
+// Добавляем валидацию форм
+const formEditValidator = new FormValidator(formSettings, formEdit);
+formEditValidator.enableValidation();
+const formAddValidator = new FormValidator(formSettings, formAdd);
+formAddValidator.enableValidation();
