@@ -5,6 +5,8 @@ export class FormValidator {
   constructor(settings, formElement) {
     this._settings = settings;
     this._formElement = formElement;
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._settings.inputSelector));
+    this._buttonElement = this._formElement.querySelector(this._settings.submitButtonSelector);
   }
 
   // Показывает ошибку в заданной форме на заданном поле
@@ -24,18 +26,20 @@ export class FormValidator {
   }
 
   // Возвращает true, если в списке полей есть хотя бы одно, не прошедшее валидацию
-  _hasInvalidInput(inputList) {
-    return inputList.some((inputElement) => {
+  _hasInvalidInput() {
+    return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid;
     })
   }
 
   // Блокирует или разблокирует кнопку отправки формы в зависимости от того, прошел ли валидацию список полей
-  _adjustButtonState(inputList, buttonElement) {
-    if (this._hasInvalidInput(inputList)) {
-      buttonElement.classList.add(this._settings.inactiveButtonClass);
+  _adjustButtonState() {
+    if (this._hasInvalidInput()) {
+      this._buttonElement.classList.add(this._settings.inactiveButtonClass);
+      this._buttonElement.disabled = true;
     } else {
-      buttonElement.classList.remove(this._settings.inactiveButtonClass);
+      this._buttonElement.classList.remove(this._settings.inactiveButtonClass);
+      this._buttonElement.disabled = false;
     }
   }
 
@@ -50,12 +54,10 @@ export class FormValidator {
 
   // Добавляет к элементам формы обработчики событий
   _setEventListeners() {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._settings.inputSelector));
-    const buttonElement = this._formElement.querySelector(this._settings.submitButtonSelector);
-    inputList.forEach((inputElement) => {
+    this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._checkInputValidity(inputElement);
-        this._adjustButtonState(inputList, buttonElement);
+        this._adjustButtonState();
       });
     });
   }
@@ -67,4 +69,13 @@ export class FormValidator {
     });
     this._setEventListeners();
   }
+
+  // Сбрасывает состояние валидации формы к исходному
+  resetValidation() {
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
+    this._adjustButtonState();
+  }
+
 }
