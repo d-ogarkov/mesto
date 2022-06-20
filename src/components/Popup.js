@@ -1,16 +1,18 @@
 export class Popup {
   constructor(selector) {
     this._container = document.querySelector(selector);
+    // Привязка метода к контексту класса, чтобы обработчик Esc добавлялся и удалялся корректно
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
 
   open() {
     this._container.classList.add('popup_opened');
-    document.addEventListener('keydown', this._handleEscClose.bind(this));
+    document.addEventListener('keydown', this._handleEscClose);
   }
 
   close() {
     this._container.classList.remove('popup_opened');
-    document.removeEventListener('keydown', this._handleEscClose.bind(this));
+    document.removeEventListener('keydown', this._handleEscClose);
   }
 
   _handleEscClose(evt) {
