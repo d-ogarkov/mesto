@@ -2,17 +2,16 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="pages/index.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
 </head>
 <body class="page">
   <header class="header">
-    <a class="link" href=""><img class="header__logo" src="images/header-logo.svg" alt="Mesto Russia" lang="en"></a>
+    <a class="link" href=""><img class="header__logo" src="<%=require('../images/header-logo.svg')%>" alt="Mesto Russia" lang="en"></a>
   </header>
   <main class="content">
     <section class="profile">
-      <img class="profile__avatar" src="images/profile-avatar.jpg" alt="Жак-Ив Кусто">
+      <img class="profile__avatar" src="<%=require('../images/profile-avatar.jpg')%>" alt="Жак-Ив Кусто">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
         <button type="button" class="profile__edit-btn"></button>
@@ -69,13 +68,13 @@
   <div class="popup popup_type_image-view">
     <div class="popup__media">
       <button type="button" class="popup__close-btn"></button>
-      <img class="popup__image" src="images/placeholder.png" alt="Просмотр изображения">
+      <img class="popup__image" src="<%=require('../images/placeholder.png')%>" alt="Просмотр изображения">
       <p class="popup__caption"></p>
     </div>
   </div>
   <template id="elements__item-template">
     <li class="element">
-      <img class="element__image" src="images/placeholder.png" alt="Изображение в карточке">
+      <img class="element__image" src="<%=require('../images/placeholder.png')%>" alt="Изображение в карточке">
       <button type="button" class="element__trash-btn"></button>
       <div class="element__caption">
         <h2 class="element__title"></h2>
@@ -83,8 +82,5 @@
       </div>
     </li>
   </template>
-  <script type="module" src="scripts/Card.js"></script>
-  <script type="module" src="scripts/FormValidator.js"></script>
-  <script type="module" src="scripts/index.js"></script>
 </body>
 </html>

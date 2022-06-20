@@ -2,22 +2,18 @@
 export class Card {
 
   // Конструктор принимает данные карточки, селектор шаблона и внешнюю функцию просмотра изображения
-  constructor(data, cardSelector, handleView) {
+  constructor(data, cardSelector, handleCardClick) {
     // Сохраняем название, URL картинки, селектор шаблона карточки, обработчик просмотра
     this._title = data.title;
     this._imageSrc = data.imageSrc;
     this._cardSelector = cardSelector;
-    this._handleView = handleView;
+    this._handleCardClick = handleCardClick;
   }
 
   // Возвращает разметку из шаблона в HTML
   _getTemplate() {
-    return document.querySelector(this._cardSelector).content.querySelector('.element').cloneNode(true);
-  }
-
-  // Обрабатывает нажатие на изображение в карточке (вызывает функцию просмотра)
-  _handleClickImage() {
-    this._handleView(this._imageSrc, this._title);
+    const element = document.querySelector(this._cardSelector).content.querySelector('.element').cloneNode(true);
+    return element;
   }
 
   // Обрабатывает нажатие кнопки лайка (переключает состояние)
@@ -33,7 +29,7 @@ export class Card {
   // Добавляет к карточке обработчики событий
   _setEventListeners() {
     this._elementImage.addEventListener('click', () => {
-      this._handleClickImage();
+      this._handleCardClick(this._imageSrc, this._title);
     });
     this._elementLikeBtn.addEventListener('click', () => {
       this._handleToggleLike();
