@@ -7,7 +7,7 @@
 </head>
 <body class="page">
   <header class="header">
-    <a class="link" href=""><img class="header__logo" src="<%=require('../images/header-logo.svg')%>" alt="Mesto Russia" lang="en"></a>
+    <a class="link" href=""><img class="header__logo" src="<%=require('./images/header-logo.svg')%>" alt="Mesto Russia" lang="en"></a>
   </header>
   <main class="content">
     <section class="profile">
@@ -34,11 +34,11 @@
         <h2 class="popup__title">Редактировать профиль</h2>
         <fieldset class="popup__fieldset">
           <label class="popup__field">
-            <input type="text" id="name-input" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40">
+            <input type="text" id="name-input" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40">
             <span class="popup__error name-input-error"></span>
           </label>
           <label class="popup__field">
-            <input type="text" id="about-input" class="popup__input popup__input_type_about" placeholder="Титул" required minlength="2" maxlength="200">
+            <input type="text" id="about-input" name="about" class="popup__input popup__input_type_about" placeholder="Титул" required minlength="2" maxlength="200">
             <span class="popup__error about-input-error"></span>
           </label>
         </fieldset>
@@ -53,11 +53,11 @@
         <h2 class="popup__title">Новое место</h2>
         <fieldset class="popup__fieldset">
           <label class="popup__field">
-            <input type="text" id="title-input" class="popup__input popup__input_type_title" placeholder="Название" required minlength="2" maxlength="30">
+            <input type="text" id="title-input" name="title" class="popup__input popup__input_type_title" placeholder="Название" required minlength="2" maxlength="30">
             <span class="popup__error title-input-error"></span>
           </label>
           <label class="popup__field">
-            <input type="url" id="link-input" class="popup__input popup__input_type_link" placeholder="Ссылка на картинку" required>
+            <input type="url" id="link-input" name="link" class="popup__input popup__input_type_link" placeholder="Ссылка на картинку" required>
             <span class="popup__error link-input-error"></span>
           </label>
         </fieldset>
@@ -68,7 +68,7 @@
   <div class="popup popup_type_image-view">
     <div class="popup__media">
       <button type="button" class="popup__close-btn"></button>
-      <img class="popup__image" src="<%=require('../images/placeholder.png')%>" alt="Просмотр изображения">
+      <img class="popup__image" src="<%=require('./images/placeholder.png')%>" alt="Просмотр изображения">
       <p class="popup__caption"></p>
     </div>
   </div>
@@ -88,7 +88,7 @@
         <h2 class="popup__title">Обновить аватар</h2>
         <fieldset class="popup__fieldset">
           <label class="popup__field">
-            <input type="url" id="avatar-input" class="popup__input popup__input_type_link" placeholder="Ссылка на картинку" required>
+            <input type="url" id="avatar-input" name="avatar" class="popup__input popup__input_type_link" placeholder="Ссылка на картинку" required>
             <span class="popup__error avatar-input-error"></span>
           </label>
         </fieldset>
@@ -98,7 +98,7 @@
   </div>
   <template id="elements__item-template">
     <li class="element">
-      <img class="element__image" src="<%=require('../images/placeholder.png')%>" alt="Изображение в карточке">
+      <img class="element__image" src="<%=require('./images/placeholder.png')%>" alt="Изображение в карточке">
       <button type="button" class="element__trash-btn"></button>
       <div class="element__caption">
         <h2 class="element__title"></h2>

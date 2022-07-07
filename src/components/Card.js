@@ -29,8 +29,9 @@ export class Card {
 
   // Обрабатывает нажатие кнопки лайка (переключает состояние)
   _handleToggleLike() {
-    //this._elementLikeBtn.classList.toggle('element__like-btn_active');
-    const newData = this._handleCardLike(this._handleRefreshLikes, { cardId: this._id, userLikes: this._userLikes });
+    // Вызываем внешний обработчик установки/снятия лайка (который взаимодействует с API),
+    // передавая ему внутренний обработчик (который обновит на странице состояние кнопки и количество лайков)
+    this._handleCardLike(this._handleRefreshLikes, { cardId: this._id, userLikes: this._userLikes });
   }
 
   // Обновляет состояние кнопки лайка и количество лайков на странице

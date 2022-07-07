@@ -1,27 +1,32 @@
-import { formSettings, apiSettings } from '../utils/constants.js';
-import { Card } from '../components/Card.js';
-import { FormValidator } from '../components/FormValidator.js';
-import { Section } from '../components/Section.js';
-import { PopupWithForm } from '../components/PopupWithForm.js';
-import { PopupWithImage } from '../components/PopupWithImage.js';
-import { PopupWithConfirmation } from '../components/PopupWithConfirmation.js';
-import { UserInfo } from '../components/UserInfo.js';
-import { Api } from '../components/Api.js';
-import './index.css';
+import { formSettings, apiSettings } from './utils/constants.js';
+import { Card } from './components/Card.js';
+import { FormValidator } from './components/FormValidator.js';
+import { Section } from './components/Section.js';
+import { PopupWithForm } from './components/PopupWithForm.js';
+import { PopupWithImage } from './components/PopupWithImage.js';
+import { PopupWithConfirmation } from './components/PopupWithConfirmation.js';
+import { UserInfo } from './components/UserInfo.js';
+import { Api } from './components/Api.js';
+import './pages/index.css';
 
 const btnEdit = document.querySelector('.profile__edit-btn');
 const btnAdd = document.querySelector('.profile__add-btn');
 const btnAvatar = document.querySelector('.profile__avatar');
-const inputFormEditName = document.querySelector('.popup__input_type_name');
-const inputFormEditAbout = document.querySelector('.popup__input_type_about');
 const formValidators = {};
-let cardList = {};
+
+const cardList = new Section({
+  renderer: (cardData) => {
+    const cardElement = createCard(cardData);
+    cardList.addItem(cardElement);
+    },
+  },
+  '.elements__list'
+);
 
 // Открывает попап редактирования профиля, подставив в инпуты текущие данные со страницы
 function openFormEdit() {
   const currentUserInfo = userInfo.getUserInfo();
-  inputFormEditName.value = currentUserInfo.name;
-  inputFormEditAbout.value = currentUserInfo.about;
+  popupFormEdit.setInputValues(currentUserInfo);
   formValidators['edit-form'].resetValidation();
   popupFormEdit.open();
 }
@@ -32,8 +37,11 @@ function openFormAdd() {
   popupFormAdd.open();
 }
 
+// Открывает попап подтверждения удаления карточки.
+// Если пользователь подтверждает удаление, вызывается handleActionConfirmed
 function openFormDelete(handleActionConfirmed, data) {
-  popupFormDelete.open(handleActionConfirmed, data);
+  popupFormDelete.setActionConfirmed(handleActionConfirmed, data);
+  popupFormDelete.open();
 }
 
 // Открывает попап просмотра картинки, подставляя в него адрес картинки, на которую кликнули, и ее название
@@ -46,54 +54,71 @@ function openFormAvatar() {
   popupFormAvatar.open();
 }
 
-// Отправляет форму редактирования профиля на сервер, подставляет данные на страницу и закрывает попап
-function submitFormEdit(evt, inputValues) {
-  evt.preventDefault();
+// Отправляет форму редактирования профиля на сервер, подставляет данные на страницу
+// и, если запрос прошел успешно, закрывает попап. Иначе оставляет его открытым
+function submitFormEdit(inputValues) {
   const name = inputValues['name-input'];
   const about = inputValues['about-input'];
   api.setUserInfo({ name, about })
     .then((res) => {
-      userInfo.setUserInfo(res);
+      if (res) {
+        userInfo.setUserInfo(res);
+        popupFormEdit.close();
+      }
+    })
+    .finally(() => {
+      popupFormEdit.restoreDefaultText();
     });
-  popupFormEdit.close();
 }
 
 // Отправляет форму добавления карточки (создает в начале списка новую карточку с заданными названием и картинкой)
-function submitFormAdd(evt, inputValues) {
-  evt.preventDefault();
+function submitFormAdd(inputValues) {
   const name = inputValues['title-input'];
   const link = inputValues['link-input'];
   api.addCard({ name, link })
-    .then(res => {
-      // Здесь id создателя карточки совпадает с id текущего пользователя
-      const cardElement = createCard(res, res.owner._id);
-      cardList.prependItem(cardElement);
-      formValidators['add-form'].resetValidation();
-      popupFormAdd.close();
+    .then((res) => {
+      if (res) {
+        // Здесь id создателя карточки совпадает с id текущего пользователя
+        const cardElement = createCard(res, res.owner._id);
+        cardList.prependItem(cardElement);
+        popupFormAdd.close();
+      }
+    })
+    .finally(() => {
+      popupFormAdd.restoreDefaultText();
     });
 }
 
-function submitFormDelete(evt, handleDelete, cardId) {
-  evt.preventDefault();
+// Удаляет карточку после подтверждения пользователем
+function submitFormDelete(handleDelete, cardId) {
   // Удаляем карточку с сервера по переданному cardId
   api.deleteCard(cardId)
-    .then(() => {
-      // Вызываем обработчик удаления карточки в Card, который удалит ее из DOM
-      handleDelete();
+    .then((res) => {
+      if (res) {
+        // Вызываем обработчик удаления карточки в Card, который удалит ее из DOM
+        handleDelete();
+        popupFormDelete.close();
+      }
     });
-  popupFormDelete.close();
 }
 
-function submitFormAvatar(evt, inputValues) {
-  evt.preventDefault();
+// Отправляет форму редактирования аватара (новую ссылку на картинку)
+function submitFormAvatar(inputValues) {
   const link = inputValues['avatar-input'];
   api.setAvatar({ avatar: link })
-    .then(() => {
-      userInfo.setAvatar(link);
+    .then((res) => {
+      if (res) {
+        userInfo.setUserInfo(res);
+        popupFormAvatar.close();
+      }
+    })
+    .finally(() => {
+      popupFormAvatar.restoreDefaultText();
     });
-  popupFormAvatar.close();
 }
 
+// Устанавливает или снимает лайк на карточке (через API) в зависимости от значения userLikes,
+// затем вызывает переданный обработчик для обновления кнопки и кол-ва лайков на странице
 function toggleCardLike(handleRefreshLikes, { cardId, userLikes }) {
   if (userLikes === false) {
     api.setLike(cardId)
@@ -108,9 +133,11 @@ function toggleCardLike(handleRefreshLikes, { cardId, userLikes }) {
   }
 }
 
-// Создает и возвращает экземпляр карточки с установленными обработчиками событий
-function createCard(cardData, userId) {
-  const card = new Card(cardData, userId, '#elements__item-template', openImageView, openFormDelete, toggleCardLike);
+// Создает и возвращает экземпляр карточки с установленными обработчиками событий.
+// К этому моменту данные пользователя уже должны быть загружены и вызван userInfo.setUserInfo(...)
+function createCard(cardData) {
+  // При создании карточки передаем id пользователя, чтобы кнопка удаления была только у своих карточек
+  const card = new Card(cardData, userInfo.id, '#elements__item-template', openImageView, openFormDelete, toggleCardLike);
   const cardElement = card.generateCard();
   return cardElement;
 }
@@ -162,20 +189,9 @@ const userInfo = new UserInfo('.profile__name', '.profile__about', '.profile__av
 // Начнем отрисовку, когда выполнятся оба промиса:
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([resUserInfo, resInitialCards]) => {
-    // Заполняем элементы на странице загруженной информацией о пользователе
+    // Заполняем элементы на странице загруженной информацией о пользователе и отрисовываем карточки
     userInfo.setUserInfo(resUserInfo);
-    // Отрисовываем секцию карточек, передавая id пользователя, чтобы кнопка удаления была только у своих карточек.
-    // cardList понадобится в submitFormAdd, поэтому объявлен глобально
-    cardList = new Section({
-      items: resInitialCards,
-      renderer: (cardData) => {
-        const cardElement = createCard(cardData, resUserInfo._id);
-        cardList.addItem(cardElement);
-        },
-      },
-      '.elements__list'
-    );
-    cardList.renderItems();
+    cardList.renderItems(resInitialCards);
   });
 
 // Добавляем обработчики событий

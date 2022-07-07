@@ -6,8 +6,17 @@ export class PopupWithForm extends Popup {
     this._form = this._container.querySelector('.form');
     this._handleSubmit = handleSubmit;
     // Сюда соберем все поля ввода в форме
-    this._inputList = this._container.querySelectorAll('.popup__input');
-    this._buttonSubmit = this._container.querySelector('.popup__submit-btn');
+    this._inputList = this._form.querySelectorAll('.popup__input');
+    this._buttonSubmit = this._form.querySelector('.popup__submit-btn');
+    // Сохраним дефолтный текст на кнопке, чтобы восстановить после изменения на "Сохранение..."
+    this._buttonSubmitDefaultText = this._buttonSubmit.value;
+  }
+
+  // Устанавливает значения полей перед открытием попапа
+  setInputValues(data){
+    this._inputList.forEach((input) => {
+      input.value = data[input.name];
+    });
   }
 
   // Собирает данные всех полей формы
@@ -20,7 +29,7 @@ export class PopupWithForm extends Popup {
   }
 
   open() {
-    this._buttonSubmit.value = 'Сохранить';
+    this.restoreDefaultText();
     super.open();
   }
 
@@ -29,11 +38,17 @@ export class PopupWithForm extends Popup {
     this._form.reset();
   }
 
+  // Восстанавливает текст кнопки сабмита, нужно вызвать извне, если что-то пошло не так и попап не закрыт
+  restoreDefaultText() {
+    this._buttonSubmit.value = this._buttonSubmitDefaultText;
+  }
+
   setEventListeners() {
     super.setEventListeners();
     this._form.addEventListener('submit', (evt) => {
+      evt.preventDefault();
       this._buttonSubmit.value = 'Сохранение...';
-      this._handleSubmit(evt, this._getInputValues());
+      this._handleSubmit(this._getInputValues());
     });
   }
 }
