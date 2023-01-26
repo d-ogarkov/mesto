@@ -6,6 +6,10 @@
 
 Использованы HTML, CSS, JavaScript. Адаптивная верстка для экранов шириной от 320px до бесконечности. Валидация форм. Взаимодействие с бэкендом Практикума. Разбивка кода на модули. Файловая структура по БЭМ. Сборка с использованием Webpack.
 
+## Демо
+
+* [Проект на GitHub Pages](https://d-ogarkov.github.io/mesto/)
+
 ## Запуск
 
 `npm run dev` — запускает проект в режиме разработки (будет доступен по адресу http://localhost:8080)
@@ -19,5 +23,4 @@
 ## Ссылки
 
 * [Макет в Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
-* [Проект в GitHub Pages](https://d-ogarkov.github.io/mesto/)
 * [Репозиторий](https://github.com/d-ogarkov/mesto)
